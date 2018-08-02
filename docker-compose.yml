@@ -1,0 +1,112 @@
+version: '3'
+
+networks:
+  hrm-net:
+
+services:
+  front-end:
+    image: weaveworksdemos/front-end:0.3.12
+    ports:
+      - '82:8079'
+    environment:
+      - reschedule=on-node-failure
+    networks:
+      - hrm-net
+
+  catalogue:
+    image: weaveworksdemos/catalogue:0.3.5
+    environment:
+      - reschedule=on-node-failure
+    networks:
+      - hrm-net
+
+  catalogue-db:
+    image: weaveworksdemos/catalogue-db:0.3.0
+    environment:
+      - reschedule=on-node-failure
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_DATABASE=socksdb
+    networks:
+      - hrm-net
+
+  carts:
+    image: weaveworksdemos/carts:0.4.8
+    environment:
+      - reschedule=on-node-failure
+      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+    networks:
+      - hrm-net
+
+  carts-db:
+    image: mongo:3.4
+    environment:
+      - reschedule=on-node-failure
+    networks:
+      - hrm-net
+
+  orders:
+    image: weaveworksdemos/orders:0.4.7
+    environment:
+      - reschedule=on-node-failure
+      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+    networks:
+      - hrm-net
+
+  orders-db:
+    image: mongo:3.4
+    environment:
+      - reschedule=on-node-failure
+    networks:
+      - hrm-net
+
+  shipping:
+    image: weaveworksdemos/shipping:0.4.8
+    environment:
+      - reschedule=on-node-failure
+      - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+    networks:
+      - hrm-net
+
+  # @pidster: I've added this back in a comment, because I don't know why it is missing from this file
+  # queue-master:
+  #   image: weaveworksdemos/queue-master:0.3.1
+  #   hostname: queue-master
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   dns: 172.17.0.1
+  #   environment:
+  #     - reschedule=on-node-failure
+  rabbitmq:
+    image: rabbitmq:3.6.8
+    environment:
+      - reschedule=on-node-failure
+    networks:
+      - hrm-net
+
+  payment:
+    image: weaveworksdemos/payment:0.4.3
+    environment:
+      - reschedule=on-node-failure
+    networks:
+      - hrm-net
+
+  user:
+    image: weaveworksdemos/user:0.4.4
+    environment:
+      - MONGO_HOST=user-db:27017
+      - reschedule=on-node-failure
+    networks:
+      - hrm-net
+
+  user-db:
+    image: weaveworksdemos/user-db:0.4.0
+    environment:
+      - reschedule=on-node-failure
+    networks:
+      - hrm-net
+  user-sim:
+    image: weaveworksdemos/load-test:0.1.1
+    command: "-d 60 -r 200 -c 2 -h front-end:8079"
+    networks:
+      - hrm-net
