@@ -5,7 +5,7 @@ networks:
 
 services:
   front-end:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-front-end
+    image: dtr.ucsbang6.com/admin/weaveworksdemos-front-end:0.3.12
     ports:
       - '82:8079'
     environment:
@@ -14,14 +14,14 @@ services:
       - hrm-net
 
   catalogue:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-catalogue
+    image: dtr.ucsbang6.com/admin/weaveworksdemos-catalogue:0.3.5
     environment:
       - reschedule=on-node-failure
     networks:
       - hrm-net
 
   catalogue-db:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-catalogue-db
+    image: dtr.ucsbang6.com/admin/weaveworksdemos-catalogue-db:0.3.0
     environment:
       - reschedule=on-node-failure
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -31,7 +31,7 @@ services:
       - hrm-net
 
   carts:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-carts
+    image: dtr.ucsbang6.com/admin/weaveworksdemos-carts:0.4.8
     environment:
       - reschedule=on-node-failure
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
@@ -39,14 +39,14 @@ services:
       - hrm-net
 
   carts-db:
-    image: dtr.ucsbang6.com/admin/mongo
+    image: dtr.ucsbang6.com/admin/mongo:3.4
     environment:
       - reschedule=on-node-failure
     networks:
       - hrm-net
 
   orders:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-orders
+    image: dtr.ucsbang6.com/admin/weaveworksdemos-orders:0.4.7
     environment:
       - reschedule=on-node-failure
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
@@ -54,14 +54,14 @@ services:
       - hrm-net
 
   orders-db:
-    image: dtr.ucsbang6.com/admin/mongo
+    image: dtr.ucsbang6.com/admin/mongo:3.4
     environment:
       - reschedule=on-node-failure
     networks:
       - hrm-net
 
   shipping:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-shipping
+    image: dtr.ucsbang6.com/admin/weaveworksdemos-shipping:0.4.8
     environment:
       - reschedule=on-node-failure
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
@@ -78,21 +78,21 @@ services:
   #   environment:
   #     - reschedule=on-node-failure
   rabbitmq:
-    image: dtr.ucsbang6.com/admin/rabbitmq
+    image: dtr.ucsbang6.com/admin/rabbitmq:3.6.8
     environment:
       - reschedule=on-node-failure
     networks:
       - hrm-net
 
   payment:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-payment
+    image: dtr.ucsbang6.com/admin/weaveworksdemos-payment:latest
     environment:
       - reschedule=on-node-failure
     networks:
       - hrm-net
 
   user:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-user
+    image: dtr.ucsbang6.com/admin/weaveworksdemos-user:0.4.4
     environment:
       - MONGO_HOST=user-db:27017
       - reschedule=on-node-failure
@@ -100,7 +100,7 @@ services:
       - hrm-net
 
   user-db:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-user-db
+    image: dtr.ucsbang6.com/admin/weaveworksdemos-user-db:0.4.0
     environment:
       - reschedule=on-node-failure
     networks:
