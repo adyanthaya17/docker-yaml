@@ -6,6 +6,8 @@ networks:
 services:
   front-end:
     image: dtr.ucsbang6.com/admin/weaveworksdemos-front-end:0.3.12
+    #image: dtr.ucsbang6.com/admin/front-end:2
+    #image: dtr.ucsbang6.com/admin/front-endapp:2
     ports:
       - '82:8079'
     environment:
@@ -15,6 +17,7 @@ services:
 
   catalogue:
     image: dtr.ucsbang6.com/admin/weaveworksdemos-catalogue:0.3.5
+    #image: dtr.ucsbang6.com/admin/catalogue:2
     environment:
       - reschedule=on-node-failure
     networks:
@@ -106,7 +109,7 @@ services:
     networks:
       - hrm-net
   user-sim:
-    image: weaveworksdemos/load-test:0.1.1
+    image: dtr.ucsbang6.com/admin/weaveworksdemos-load-test:0.1.1
     command: "-d 60 -r 200 -c 2 -h front-end:8079"
     networks:
       - hrm-net
