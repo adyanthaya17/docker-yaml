@@ -5,9 +5,8 @@ networks:
 
 services:
   front-end:
-    #image: dtr.ucsbang6.com/admin/weaveworksdemos-front-end:0.3.12
-    #image: dtr.ucsbang6.com/admin/front-end:2
     image: dtr.ucsbang6.com/admin/front-endapp:2
+    #image: dtr.ucsbang6.com/admin/weaveworksdemos-frontend:3
     ports:
       - '82:8079'
     environment:
@@ -16,15 +15,15 @@ services:
       - hrm-net
 
   catalogue:
-    #image: dtr.ucsbang6.com/admin/weaveworksdemos-catalogue:0.3.5
     image: dtr.ucsbang6.com/admin/catalogue:2
+#   image: dtr.ucsbang6.com/admin/test-catalogue:1
     environment:
       - reschedule=on-node-failure
     networks:
       - hrm-net
 
   catalogue-db:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-catalogue-db:0.3.0
+    image: dtr.ucsbang6.com/admin/weaveworksdemos-catalogue-db:0.3.0 
     environment:
       - reschedule=on-node-failure
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
