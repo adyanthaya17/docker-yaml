@@ -5,8 +5,8 @@ networks:
 
 services:
   front-end:
-    image: dtr.ucsbang6.com/admin/front-endapp:2
-    #image: dtr.ucsbang6.com/admin/weaveworksdemos-frontend:3
+    #image: dtr.ucsbang6.com/admin/front-endapp:2
+    image: dtr.ucsbang6.com/admin/weaveworksdemos-frontend:3
     ports:
       - '82:8079'
     environment:
@@ -15,8 +15,8 @@ services:
       - hrm-net
 
   catalogue:
-    image: dtr.ucsbang6.com/admin/catalogue:2
-    #image: dtr.ucsbang6.com/admin/test-catalogue:1
+    #image: dtr.ucsbang6.com/admin/catalogue:2
+    image: dtr.ucsbang6.com/admin/test-catalogue:1
     environment:
       - reschedule=on-node-failure
     networks:
