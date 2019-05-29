@@ -5,8 +5,8 @@ networks:
 
 services:
   front-end:
-    image: dtr.ucsbang6.com/admin/front-end:1
-    #image: dtr.ucsbang6.com/admin/front-endd:2
+    #image: dtr.ucsbang6.com/admin/front-end:1
+    image: dtr.ucsbang6.com/admin/front-endd:2
 
     #image: weaveworksdemos/front-end:0.3.12
     ports:
@@ -17,8 +17,8 @@ services:
       - hrm-net
 
   catalogue:
-    image: dtr.ucsbang6.com/admin/catalogue:1
-    #image: dtr.ucsbang6.com/admin/cataloguee:2
+    #image: dtr.ucsbang6.com/admin/catalogue:1
+    image: dtr.ucsbang6.com/admin/cataloguee:2
 
     #image: weaveworksdemos/catalogue:0.3.5
     environment:
