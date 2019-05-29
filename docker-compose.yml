@@ -5,8 +5,10 @@ networks:
 
 services:
   front-end:
-    image: dtr.ucsbang6.com/admin/front-endapp:2
-    #image: dtr.ucsbang6.com/admin/weaveworksdemos-frontend:3
+    image: dtr.ucsbang6.com/admin/front-end:1
+    #image: dtr.ucsbang6.com/admin/front-endd:2
+
+    #image: weaveworksdemos/front-end:0.3.12
     ports:
       - '82:8079'
     environment:
@@ -15,15 +17,18 @@ services:
       - hrm-net
 
   catalogue:
-    image: weaveworksdemos/catalogue:0.3.5
-    #image: dtr.ucsbang6.com/admin/test-catalogue:1
+    image: dtr.ucsbang6.com/admin/catalogue:1
+    #image: dtr.ucsbang6.com/admin/cataloguee:2
+
+    #image: weaveworksdemos/catalogue:0.3.5
     environment:
       - reschedule=on-node-failure
     networks:
       - hrm-net
 
   catalogue-db:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-catalogue-db:0.3.0 
+#    image: dtr.ucsbang6.com/admin/weaveworksdemos-catalogue-db:0.3.0
+    image: weaveworksdemos/catalogue-db:0.3.0
     environment:
       - reschedule=on-node-failure
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -31,9 +36,12 @@ services:
       - MYSQL_DATABASE=socksdb
     networks:
       - hrm-net
+#    volumes:
+#      - /mnt/catalogue-db:/docker-entrypoint-initdb.d
 
   carts:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-carts:0.4.8
+#    image: dtr.ucsbang6.com/admin/weaveworksdemos-carts:0.4.8
+    image: weaveworksdemos/carts:0.4.8
     environment:
       - reschedule=on-node-failure
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
@@ -41,14 +49,17 @@ services:
       - hrm-net
 
   carts-db:
-    image: dtr.ucsbang6.com/admin/mongo:3.4
+#    image: dtr.ucsbang6.com/admin/mongo:3.4
+    image: mongo:3.4
     environment:
       - reschedule=on-node-failure
     networks:
       - hrm-net
+#    volumes:
+#      - /mnt/carts-db:/data
 
   orders:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-orders:0.4.7
+    image: weaveworksdemos/orders:0.4.7
     environment:
       - reschedule=on-node-failure
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
@@ -56,45 +67,38 @@ services:
       - hrm-net
 
   orders-db:
-    image: dtr.ucsbang6.com/admin/mongo:3.4
+    image: mongo:3.4
     environment:
       - reschedule=on-node-failure
     networks:
       - hrm-net
+#    volumes:
+#      - /mnt/orders-db:/data
 
   shipping:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-shipping:0.4.8
+    image: weaveworksdemos/shipping:0.4.8
     environment:
       - reschedule=on-node-failure
       - JAVA_OPTS=-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
     networks:
       - hrm-net
 
-  # @pidster: I've added this back in a comment, because I don't know why it is missing from this file
-  # queue-master:
-  #   image: weaveworksdemos/queue-master:0.3.1
-  #   hostname: queue-master
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #   dns: 172.17.0.1
-  #   environment:
-  #     - reschedule=on-node-failure
   rabbitmq:
-    image: dtr.ucsbang6.com/admin/rabbitmq:3.6.8
+    image: rabbitmq:3.6.8
     environment:
       - reschedule=on-node-failure
     networks:
       - hrm-net
 
   payment:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-payment:latest
+    image: weaveworksdemos/payment:latest
     environment:
       - reschedule=on-node-failure
     networks:
       - hrm-net
 
   user:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-user:0.4.4
+    image: weaveworksdemos/user-db:0.4.4
     environment:
       - MONGO_HOST=user-db:27017
       - reschedule=on-node-failure
@@ -102,13 +106,17 @@ services:
       - hrm-net
 
   user-db:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-user-db:0.4.0
+    image: mongo:3.4
+    #image: dtr.ucsbang6.com/admin/mysql
     environment:
       - reschedule=on-node-failure
     networks:
       - hrm-net
+    volumes:
+      - /mnt:/data/db-users
+
   user-sim:
-    image: dtr.ucsbang6.com/admin/weaveworksdemos-load-test:0.1.1
+    image: weaveworksdemos/load-test:0.1.1
     command: "-d 60 -r 200 -c 2 -h front-end:8079"
     networks:
       - hrm-net
